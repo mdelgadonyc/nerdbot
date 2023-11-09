@@ -8,6 +8,7 @@ import (
 	"time"
 	"unicode"
 
+	"nerdbot/delphi"
 	"nerdbot/translate"
 
 	"github.com/bwmarrin/discordgo"
@@ -68,6 +69,14 @@ func onMessageCreate(s *discordgo.Session, event *discordgo.MessageCreate) {
 	author := event.Author.Username
 
 	log.Printf("Message from %s in channel %s: %s", author, event.ChannelID, message)
+
+	// Check if the last character of the message is a question mark (?)
+	if message[len(message)-1] == "?"[0] {
+		//log.Println("We have encountered a question!")
+		chatString := delphi.Delphi(message)
+		// fmt.Println(chatString)
+		s.ChannelMessageSend(event.ChannelID, chatString)
+	}
 
 	words := strings.Split(message, " ")
 
